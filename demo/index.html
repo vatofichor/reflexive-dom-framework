@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDF Framework Demo</title>
+    <link rel="stylesheet" href="../reflexive-dom-framework/styles/rdf.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn {
+            background: #00e5ff;
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .shortcut {
+            color: #888;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        kbd {
+            background: #333;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Reflexive DOM Framework</h1>
+        <p>The "UI is the API". Use the prompter to trigger actions.</p>
+
+        <!-- Navigation Container (RDF will populate this) -->
+        <nav class="rdf-nav" data-nav="bg-btn"></nav>
+        <section id="actions-section" style="padding: 50px; border: 1px solid #333; margin-bottom: 50px;">
+            <h2>Action Section</h2>
+            <button id="alert-btn" data-note="Say Hello" class="btn">
+                Say Hello
+            </button>
+            <button id="bg-btn" data-note="Change Background" class="btn">
+                Change Background
+            </button>
+        </section>
+
+        <!-- WYSIWYG Test Section -->
+        <section id="wysiwyg-section" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 50px; background: rgba(255,255,255,0.01); text-align: left; box-sizing: border-box; width: 100%;">
+            <h3 style="color: var(--rdf-accent); margin-top: 0;">WYSIWYG Formatting Test Zone</h3>
+            <p style="font-size: 13px; color: #888; margin-bottom: 15px;">Highlight/select text in either box below to activate the floating WYSIWYG toolbar.</p>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 5px;">Textarea (Outputs Markdown):</label>
+                <textarea id="test-textarea" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 10px; color: white; outline: none; box-sizing: border-box; resize: vertical;" placeholder="Highlight any words here to format them with Markdown...">Highlight words in this box to format them as **bold**, *italic*, <u>underline</u>, or headings!</textarea>
+            </div>
+            
+            <div>
+                <label style="font-size: 12px; color: #aaa; display: block; margin-bottom: 5px;">ContentEditable (Outputs HTML):</label>
+                <div contenteditable="true" id="test-contenteditable" style="width: 100%; min-height: 80px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 10px; color: white; outline: none; box-sizing: border-box;" placeholder="Highlight any words here to format them with HTML tags...">This is a <b>ContentEditable</b> zone. Highlight words here to apply HTML formatting directly, like custom highlight markings or headers!</div>
+            </div>
+        </section>
+
+        <section id="tools-section" style="padding: 50px; border: 1px solid #333; margin-bottom: 500px;">
+            <h2>Tool Section</h2>
+            <button id="drawer-toggle" data-note="Toggle Drawer" class="btn">
+                Open Drawer
+            </button>
+            <button id="notes-toggle" data-note="Toggle Notes" class="btn"
+                onclick="document.getElementById('demo-drawer').classList.remove('open');">
+                Open Notes
+            </button>
+
+            <div id="demo-drawer" class="rdf-drawer" style="padding: 20px; border: 1px dashed #444;">
+                <h3>Reflexive Tools</h3>
+
+                <div id="t2-form" style="margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <h4>T2 Escalation</h4>
+                    <input type="text" id="t2-cust-info" placeholder="Customer Info"
+                        style="width:100%; margin-bottom:5px;">
+                    <textarea id="t2-notes" placeholder="Notes" style="width:100%; height:60px;"></textarea>
+                    <button id="t2-copy" class="btn" style="padding: 5px 10px; font-size: 12px;">Copy T2 Form</button>
+                    <p style="font-size: 10px; color: gray;">Command: @t2-copy</p>
+                </div>
+
+                <div id="cx-form">
+                    <h4>CX Survey</h4>
+                    <input type="text" id="cx-name" placeholder="Agent Name" style="width:100%; margin-bottom:5px;">
+                    <button id="cx-copy" class="btn" style="padding: 5px 10px; font-size: 12px;">Copy CX to Res</button>
+                    <p style="font-size: 10px; color: gray;">Command: @cx-copy</p>
+                </div>
+
+                <hr style="border-color: #333;">
+                <p style="font-size: 12px; color: #888;">Esc closes this drawer.</p>
+            </div>
+        </section>
+
+        <div class="shortcut">
+            Press <kbd>Alt + /</kbd> to open command prompter.<br>
+            Press <kbd>Alt + A</kbd> for the Hello alert.<br>
+            Press <kbd>Alt + D</kbd> to toggle the drawer.<br>
+            Press <kbd>Alt + H</kbd> in a text box for Find & Replace.<br>
+            Press <kbd>Alt + S</kbd> or <kbd>Alt + .</kbd> to toggle the Notes drawer.
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../reflexive-dom-framework/scripts/rdf.js"></script>
+    <script src="../reflexive-dom-framework/scripts/rdf.utils.js"></script>
+    <script src="../reflexive-dom-framework/scripts/rdf.drawers.js"></script>
+    <script src="../reflexive-dom-framework/scripts/rdf.tools.js"></script>
+    <script src="../reflexive-dom-framework/scripts/rdf.editor.js"></script>
+    <script src="../reflexive-dom-framework/scripts/rdf.smart-typing.js"></script>
+    <script>
+        // 1. Initialize RDF Core
+        const rdf = new ReflexiveDOM({
+            instructions: "Demo Mode Active.\nTry typing 'alert-btn', 'bg-btn', 'drawer-toggle', or 'rdf-tools'."
+        });
+
+        // 2. Initialize RDF Drawers (Registers window.RDFDrawers.instance automatically)
+        const drawers = new RDFDrawers({
+            onOpen: (el) => console.log(`[App] Drawer ${el.id} opened.`),
+            onClose: (el) => console.log(`[App] Drawer ${el.id} closed.`)
+        });
+
+        // 3. Initialize RDF Tools programmatically
+        const tools = new RDFTools();
+
+        // 4. Initialize RDF Editor (Find & Replace + WYSIWYG Toolbar)
+        const editor = new RDFEditor();
+
+        // 4. Initialize Smart Typing
+        const smartType = new RDFSmartTyping();
+
+        // Attach Smart Typing to WYSIWYG test area
+        const testArea = document.getElementById('test-textarea');
+        if (testArea) {
+            smartType.attach(testArea);
+        }
+
+        // Attach Smart Typing to the Notes quick note textarea (if active as a textarea)
+        const quickNote = document.getElementById('rdf-quick-note');
+        if (quickNote && quickNote.tagName === 'TEXTAREA') {
+            smartType.attach(quickNote);
+        }
+
+        // REGISTER DRAWERS PROGRAMMATICALLY
+
+        // A. Register an existing DOM element
+        drawers.register({
+            id: 'demo-drawer',
+            title: 'Reflexive Tools'
+        });
+
+
+        // Register Command Handlers (Domain Logic)
+
+        // T2 Form Handler
+        rdf.registerCommand('t2-copy', {
+            note: 'Copy T2 Escalation Template',
+            handler: () => {
+                const info = document.getElementById('t2-cust-info').value;
+                const notes = document.getElementById('t2-notes').value;
+                const formatted = `*Customer Info: ${info}\n*Notes: ${notes}`;
+                navigator.clipboard.writeText(formatted);
+                alert("T2 Template Copied!");
+                drawers.close('demo-drawer');
+            }
+        });
+
+        // CX Form Handler
+        rdf.registerCommand('cx-copy', {
+            note: 'Copy CX Survey to Resolution',
+            handler: () => {
+                const name = document.getElementById('cx-name').value;
+                const formatted = `[CX Survey] Agent: ${name}\n`;
+                console.log("Prepending to resolution:", formatted);
+                alert("CX Preprended (see console)");
+                drawers.close('demo-drawer');
+            }
+        });
+
+        // Note: drawers.register() automatically registers RDF commands for each drawer.
+        // No need to manually call rdf.registerCommand for starnotes or demo-drawer.
+
+        // 2. Discover commands from DOM (scans for id/data-note)
+        rdf.discoverCommands();
+
+        // 3. Render Navigation
+        rdf.renderNavigation();
+
+        // 4. Bind Shortcuts
+        rdf.bindShortcut('a', 'alert-btn');
+        rdf.bindShortcut('d', 'demo-drawer');
+        rdf.bindShortcut('s', 'rdf-tools');
+        rdf.bindShortcut('t', 't2-copy');
+
+        // 5. App-specific Logic
+        document.getElementById('alert-btn').addEventListener('click', () => {
+            alert("Hello from RDF!");
+        });
+
+        document.getElementById('bg-btn').addEventListener('click', () => {
+            const colors = ['#1a1a1a', '#121212', '#0a0a0a', '#000000'];
+            document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        });
+
+        // Manual binds for buttons to use RDF command system
+        document.getElementById('drawer-toggle').onclick = () => rdf.run(true, 'demo-drawer');
+        document.getElementById('notes-toggle').onclick = () => rdf.run(true, 'rdf-tools');
+        document.getElementById('t2-copy').onclick = () => rdf.run(true, 't2-copy');
+        document.getElementById('cx-copy').onclick = () => rdf.run(true, 'cx-copy');
+
+    </script>
+</body>
+
+</html>

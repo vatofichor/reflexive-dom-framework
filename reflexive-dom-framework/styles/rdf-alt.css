@@ -1,0 +1,743 @@
+/* 
+ * Copyright (c) 2026:
+ * vatofichor - Sebastian Mass     [>_<]
+ * & Assisted By Gemini Antigravity /|\
+ * 
+ * Reflexive DOM Framework (RDF) - Core Styles
+ * LICENSE: MIT License
+ */
+
+:root {
+    --rdf-bg-blur: rgba(240, 240, 245, 0.95);
+    --rdf-accent: #0066cc;
+    --rdf-text-primary: #1a1a1a;
+    --rdf-text-secondary: #666666;
+    --rdf-glass-border: rgba(0, 0, 0, 0.1);
+    --rdf-font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Prompter Screen Overlay */
+.rdf-prompter-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background: var(--rdf-bg-blur);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--rdf-font);
+    animation: rdf-fade-in 0.3s ease-out;
+}
+
+@keyframes rdf-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.rdf-prompter-container {
+    width: 90%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 4px 4px 0px #cccccc;
+}
+
+.rdf-prompter-header {
+    color: var(--rdf-accent);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.rdf-prompter-instructions {
+    color: var(--rdf-text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Custom Scrollbar for instructions */
+.rdf-prompter-instructions::-webkit-scrollbar {
+    width: 4px;
+}
+
+.rdf-prompter-instructions::-webkit-scrollbar-thumb {
+    background: var(--rdf-glass-border);
+    border-radius: 2px;
+}
+
+.rdf-prompter-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    color: var(--rdf-text-primary);
+    font-size: 18px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.rdf-prompter-input:focus {
+    border-color: var(--rdf-accent);
+}
+
+.rdf-prompter-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rdf-close-btn {
+    background: transparent;
+    border: 1px solid var(--rdf-glass-border);
+    color: var(--rdf-text-secondary);
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.rdf-close-btn:hover {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff5555;
+    border-color: #ff5555;
+}
+
+.rdf-shortcut-key {
+    background: var(--rdf-glass-border);
+    color: var(--rdf-text-secondary);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-family: monospace;
+}
+
+/* Navigation System Styles */
+.rdf-nav {
+    padding: 10px;
+    border-top: 1px solid var(--rdf-glass-border);
+    border-bottom: 1px solid var(--rdf-glass-border);
+    margin: 10px 0;
+    text-align: center;
+}
+
+.rdf-nav-link {
+    color: var(--rdf-accent);
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.2s;
+    margin: 0 5px;
+}
+
+.rdf-nav-link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 RDF Drawers                                */
+/* -------------------------------------------------------------------------- */
+
+.rdf-drawer {
+    display: none;
+    /* Hidden by default */
+    background: #f9f9fc;
+    border-left: 1px solid var(--rdf-glass-border);
+    box-shadow: -4px 0px 0px #cccccc;
+    z-index: 9000;
+}
+
+.rdf-drawer.open {
+    display: block !important;
+}
+
+@keyframes rdf-slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Desktop: Fixed Right Panel */
+.drawer-fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 400px;
+    max-width: 90vw;
+    overflow-y: auto;
+    animation: rdf-slide-in 0.3s ease-out;
+}
+
+/* Mobile: Inline Flow (Accordion style) */
+.drawer-inline {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rdf-glass-border);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    animation: rdf-fade-in 0.3s ease-out;
+}
+
+/* Mobile Toggles Container */
+.rdf-mobile-toggle-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    display: flex;
+    gap: 10px;
+    flex-direction: row-reverse;
+    /* Stack from right */
+}
+
+.rdf-mobile-toggle {
+    background: rgba(240, 240, 245, 0.95);
+    border: 1px solid var(--rdf-accent);
+    color: var(--rdf-accent);
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #cccccc;
+    transition: transform 0.2s;
+}
+
+.rdf-mobile-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Drawer Shell Skeleton */
+.rdf-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--rdf-glass-border);
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.rdf-drawer-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--rdf-accent);
+}
+
+.rdf-drawer-close-x {
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--rdf-text-secondary);
+    transition: color 0.2s;
+}
+
+.rdf-drawer-close-x:hover {
+    color: #ff5555;
+}
+
+.rdf-drawer-content {
+    padding: 20px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 RDF Editor                                 */
+/* -------------------------------------------------------------------------- */
+
+.rdf-editor-modal {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: var(--rdf-bg-blur);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px #cccccc;
+    z-index: 999;
+    font-family: var(--rdf-font);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: rdf-slide-up 0.3s ease-out;
+}
+
+.rdf-editor-modal.active {
+    display: flex;
+}
+
+@keyframes rdf-slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.rdf-editor-header {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--rdf-glass-border);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--rdf-accent);
+}
+
+.rdf-editor-close {
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.rdf-editor-body {
+    padding: 15px;
+}
+
+.rdf-editor-row {
+    margin-bottom: 10px;
+}
+
+.rdf-editor-row input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: var(--rdf-text-primary);
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.rdf-editor-row input:focus {
+    border-color: var(--rdf-accent);
+}
+
+.rdf-editor-options {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: var(--rdf-text-secondary);
+    margin-bottom: 15px;
+}
+
+.rdf-editor-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.rdf-editor-actions button {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--rdf-glass-border);
+    color: var(--rdf-text-primary);
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.rdf-editor-actions button:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.fr-status {
+    font-size: 11px;
+    height: 14px;
+    text-align: center;
+}
+
+/* Options Modal */
+.rdf-options-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--rdf-bg-blur);
+    backdrop-filter: blur(12px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--rdf-font);
+    animation: rdf-fade-in 0.3s ease-out;
+}
+
+.rdf-options-modal {
+    width: 90%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 4px 4px 0px #cccccc;
+}
+
+.rdf-options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--rdf-accent);
+}
+
+.rdf-options-close {
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--rdf-text-secondary);
+    transition: color 0.2s;
+}
+
+.rdf-options-close:hover {
+    color: var(--rdf-text-primary);
+}
+
+.rdf-options-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--rdf-glass-border);
+}
+
+.rdf-tab-btn {
+    background: none;
+    border: none;
+    color: var(--rdf-text-secondary);
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.rdf-tab-btn:hover {
+    color: var(--rdf-text-primary);
+}
+
+.rdf-tab-btn.active {
+    color: var(--rdf-accent);
+    border-bottom-color: var(--rdf-accent);
+}
+
+.rdf-options-body {
+    min-height: 200px;
+}
+
+.rdf-tab-content {
+    display: none;
+}
+
+.rdf-tab-content.active {
+    display: block;
+}
+
+.rdf-tab-content h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: var(--rdf-text-primary);
+}
+
+.rdf-btn-add-hotkey {
+    background: rgba(0, 102, 204, 0.1);
+    border: 1px solid var(--rdf-accent);
+    color: var(--rdf-accent);
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.rdf-btn-add-hotkey:hover {
+    background: rgba(0, 102, 204, 0.2);
+}
+
+.rdf-hotkey-list {
+    margin-top: 10px;
+}
+
+.rdf-hotkey-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    color: var(--rdf-text-primary);
+    font-size: 13px;
+}
+
+.rdf-btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.rdf-btn-delete:hover {
+    transform: scale(1.2);
+}
+
+.rdf-add-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(0, 102, 204, 0.05);
+    border: 1px solid var(--rdf-accent);
+    border-radius: 4px;
+    flex-wrap: wrap;
+}
+
+.rdf-input-key,
+.rdf-select-cmd {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--rdf-glass-border);
+    color: var(--rdf-text-primary);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.rdf-input-key {
+    width: 60px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.rdf-select-cmd {
+    flex: 1;
+    min-width: 150px;
+}
+
+.rdf-btn-save,
+.rdf-btn-cancel {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--rdf-glass-border);
+    color: var(--rdf-text-primary);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.rdf-btn-save:hover,
+.rdf-btn-cancel:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.rdf-error {
+    color: #ff5555;
+    font-size: 12px;
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.rdf-tab-content label {
+    display: inline-flex;
+    align-items: center;
+    margin: 8px 0;
+    color: var(--rdf-text-primary);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.rdf-tab-content input[type="radio"] {
+    margin-right: 8px;
+}
+
+.rdf-btn-apply-theme {
+    background: var(--rdf-accent);
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.rdf-btn-apply-theme:hover {
+    filter: brightness(1.1);
+}
+
+/* ContentEditable Placeholder Support */
+div[contenteditable]:empty::before {
+    content: attr(placeholder);
+    color: var(--rdf-text-secondary);
+    opacity: 0.6;
+    pointer-events: none;
+    display: block;
+}
+
+/* Floating WYSIWYG Inline Selection Toolbar - Alt Theme */
+.rdf-editor-inline-toolbar {
+    position: absolute;
+    display: none;
+    background: rgba(240, 240, 245, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--rdf-glass-border);
+    border-radius: 8px;
+    padding: 4px 6px;
+    box-shadow: 3px 3px 0px #cccccc;
+    z-index: 12000;
+    gap: 4px;
+    transform: translate(-50%, -100%); /* Position centered and above target coordinates */
+    animation: rdf-toolbar-appear 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rdf-toolbar-appear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -85%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1);
+    }
+}
+
+.rdf-editor-inline-toolbar.active {
+    display: flex;
+}
+
+.tb-btn {
+    background: transparent;
+    border: none;
+    color: #333333;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.tb-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--rdf-accent);
+}
+
+.tb-btn mark {
+    background: #ffeb3b;
+    color: black;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+.tb-btn.active {
+    background: rgba(0, 102, 204, 0.15) !important;
+    color: var(--rdf-accent) !important;
+    border: 1px solid rgba(0, 102, 204, 0.3);
+}
+
+/* Upgraded Stateful Notes Drawer Viewport Bottom Docking Override */
+#rdf-tools-drawer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 60vh !important;
+    border-left: none !important;
+    border-top: 1px solid var(--rdf-glass-border) !important;
+    background: var(--rdf-bg-blur) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    z-index: 998 !important;
+    box-shadow: 0px -4px 0px #cccccc !important;
+    transform: translateY(100%) !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+    display: block !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#rdf-tools-drawer.open {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Custom Stateful Notes Drawer Resize Handle Grip Badge */
+.rdf-resize-handle {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    cursor: se-resize;
+    background: linear-gradient(135deg, 
+        transparent 30%, var(--rdf-accent) 30%, var(--rdf-accent) 40%, 
+        transparent 40%, transparent 50%, var(--rdf-accent) 50%, var(--rdf-accent) 60%, 
+        transparent 60%, transparent 70%, var(--rdf-accent) 70%, var(--rdf-accent) 80%, 
+        transparent 80%
+    );
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: auto;
+    z-index: 100;
+}
+
+.rdf-resize-handle:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
